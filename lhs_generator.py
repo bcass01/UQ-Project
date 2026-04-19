@@ -10,7 +10,7 @@ NOMINALS = {
     "h": 20.0
 }
 
-def generate_samples(n=1000, filename="lhs_inputs.csv"):
+def generate_samples(n=10000, filename="lhs_inputs.csv"):
     sampler = qmc.LatinHypercube(d=len(NOMINALS))
     sample = sampler.random(n=n)
     

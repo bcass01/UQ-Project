@@ -5,7 +5,7 @@ def run_campaign(input_file="lhs_inputs.csv", output_file="uq_results.csv"):
     inputs = pd.read_csv(input_file)
     results = []
 
-    print(f"Starting UQ campaign: 1000 simulations for Ti-6Al-4V model...")
+    print(f"Starting Deterministic Solver: 10,000 simulations for Ti-6Al-4V model...")
 
     for index, row in inputs.iterrows():
         # Map CSV row to the solver parameters
@@ -27,12 +27,12 @@ def run_campaign(input_file="lhs_inputs.csv", output_file="uq_results.csv"):
         })
 
         if index % 100 == 0:
-            print(f"Progress: {index}/1000 simulations complete.")
+            print(f"Progress: {index}/10,000 simulations complete.")
 
     # Save results to a separate file
     output_df = pd.DataFrame(results)
     output_df.to_csv(output_file, index=False)
-    print(f"Campaign complete. Results saved to {output_file}")
+    print(f"Simulations complete. Results saved to {output_file}")
 
 if __name__ == "__main__":
     run_campaign()
