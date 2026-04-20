@@ -8,7 +8,7 @@ Four primary stochastic quantities are modeled as independent uniform distributi
 
 ---
 
-## File Manifest
+## File Descriptions
 
 ### 1. `thermal_solver.py`
 * **Purpose**: Implements the deterministic 1D thermal solver.
@@ -44,12 +44,3 @@ Four primary stochastic quantities are modeled as independent uniform distributi
 * **Purpose**: Performs the final Global Sensitivity Analysis.
 * **Metrics**: Calculates first-order Sobol Indices from the PCE coefficients.
 * **Conclusion**: Ranks parameters to identify which physical factors—specifically $Q$ or $A$—most significantly drive the risk of thermal defects.
-
----
-
-## Technical Evaluation Criteria
-As per the course syllabus, this project is evaluated based on: 
-* **Depth of Analysis**: Understanding and implementing advanced UQ techniques like PCE and Global Sensitivity Analysis.
-* **Overall Complexity**: The integration of the physical deterministic solver with stochastic propagation methods.
-* **Professional Writing**: The organization, clarity, and proofreading of the final report and supporting files.
-* **Originality**: Collaborative projects are strictly prohibited; all work and source code must be individual.
