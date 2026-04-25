@@ -20,7 +20,7 @@ Four primary stochastic quantities are modeled as independent uniform distributi
 * **Functionality**: Tests the solver against stationary laser heat and ensures energy conservation and CFL stability.
 * **Significance**: This step is critical to identifying potential pitfalls before moving to the stochastic analysis.
 
-### 3. `lhs_generator.py`
+### 3. `generate_lhs.py`
 * **Purpose**: Generates the stochastic input sets.
 * **Method**: Implements Latin Hypercube Sampling (LHS) to create the baseline samples for $\alpha, Q, A, \text{ and } h$.
 * **Scale**: Generates a baseline (1,000 or 10,000 samples) to provide a ground truth for surrogate validation.
@@ -35,14 +35,10 @@ Four primary stochastic quantities are modeled as independent uniform distributi
 * **Output**: Calculates the mean and variance of the QoIs from the simulation data.
 * **Role**: Provides the "gold standard" statistics used to validate the accuracy of the PCE surrogate.
 
-### 6. `pce_surrogate.py`
-* **Purpose**: Constructs the Polynomial Chaos Expansion (PCE) surrogate.
+### 6. `pce_results.py`
+* **Purpose**: Constructs the Polynomial Chaos Expansion (PCE) surrogate and performs the final Global Sensitivity Analysis.
 * **Basis**: Employs a non-intrusive PCE using a Legendre basis, which is the mathematically appropriate choice for uniform input distributions.
 * **Optimization**: Provides a computationally efficient meta-model for sensitivity analysis.
-
-### 7. `pce_results.py`
-* **Purpose**: Performs the final Global Sensitivity Analysis.
-* **Metrics**: Calculates first-order Sobol Indices from the PCE coefficients.
 * **Conclusion**: Ranks parameters to identify which physical factors—specifically $Q$ or $A$—most significantly drive the risk of thermal defects.
 
 ---
