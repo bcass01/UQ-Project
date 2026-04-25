@@ -44,3 +44,9 @@ Four primary stochastic quantities are modeled as independent uniform distributi
 * **Purpose**: Performs the final Global Sensitivity Analysis.
 * **Metrics**: Calculates first-order Sobol Indices from the PCE coefficients.
 * **Conclusion**: Ranks parameters to identify which physical factors—specifically $Q$ or $A$—most significantly drive the risk of thermal defects.
+
+---
+
+## Technical Requirements
+### Libraries
+`NumPy`, `SciPy` (for qmc), and `Pandas` (for data logging).

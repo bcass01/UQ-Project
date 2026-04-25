@@ -1,11 +1,12 @@
-import pandas as pd
+import pandas as pd #type:ignore
 from thermal_solver import ThermalParams, solve_thermal_explicit
 
 def run_campaign(input_file="lhs_inputs.csv", output_file="uq_results.csv"):
     inputs = pd.read_csv(input_file)
     results = []
+    n = len(inputs)
 
-    print(f"Starting Deterministic Solver: 10,000 simulations for Ti-6Al-4V model...")
+    print(f"Starting Deterministic Solver: {n} simulations for Ti-6Al-4V model...")
 
     for index, row in inputs.iterrows():
         # Map CSV row to the solver parameters
@@ -26,8 +27,8 @@ def run_campaign(input_file="lhs_inputs.csv", output_file="uq_results.csv"):
             "t_melt": sim_data["t_melt"]
         })
 
-        if index % 100 == 0:
-            print(f"Progress: {index}/10,000 simulations complete.")
+        if index % 1000 == 0:
+            print(f"Progress: {index}/{n} simulations complete.")
 
     # Save results to a separate file
     output_df = pd.DataFrame(results)

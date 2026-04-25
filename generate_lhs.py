@@ -1,6 +1,6 @@
-import pandas as pd
-import numpy as np
-from scipy.stats import qmc
+import pandas as pd             # type: ignore
+import numpy as np              # type: ignore
+from scipy.stats import qmc     # type: ignore
 
 # Nominal values from project proposal
 NOMINALS = {
@@ -10,7 +10,7 @@ NOMINALS = {
     "h": 20.0
 }
 
-def generate_samples(n=10000, filename="lhs_inputs.csv"):
+def generate_samples(n=1000, filename="lhs_inputs.csv"):
     sampler = qmc.LatinHypercube(d=len(NOMINALS))
     sample = sampler.random(n=n)
     
