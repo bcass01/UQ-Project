@@ -8,7 +8,8 @@ def run_campaign(input_file="lhs_inputs.csv", output_file="uq_results.csv"):
 
     print(f"Starting Deterministic Solver: {n} simulations for Ti-6Al-4V model...")
 
-    for index, row in inputs.iterrows():
+    for i in range(len(inputs)):
+        row = inputs.iloc[i]
         # Map CSV row to the solver parameters
         params = ThermalParams(
             alpha=row['alpha'],
@@ -27,8 +28,8 @@ def run_campaign(input_file="lhs_inputs.csv", output_file="uq_results.csv"):
             "t_melt": sim_data["t_melt"]
         })
 
-        if index % 1000 == 0:
-            print(f"Progress: {index}/{n} simulations complete.")
+        if i % 100 == 0:
+            print(f"Progress: {i}/{n} simulations complete.")
 
     # Save results to a separate file
     output_df = pd.DataFrame(results)

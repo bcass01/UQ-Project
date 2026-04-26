@@ -1,13 +1,14 @@
 import pandas as pd             # type: ignore
 import numpy as np              # type: ignore
 from scipy.stats import qmc     # type: ignore
+import nominals
 
 # Nominal values from project proposal
 NOMINALS = {
-    "alpha": 2.9e-6,
-    "Q": 200.0,
-    "A": 0.35,
-    "h": 20.0
+    "alpha": nominals.alpha,
+    "Q": nominals.Q,
+    "A": nominals.A,
+    "h": nominals.H
 }
 
 def generate_samples(n=1000, filename="lhs_inputs.csv"):

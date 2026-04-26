@@ -1,14 +1,15 @@
 import numpy as np                  #type:ignore
 from dataclasses import dataclass
+import nominals
 
 @dataclass
 class ThermalParams:
     """Physical and numerical parameters for Ti-6Al-4V 1D AM model."""
     # --- Stochastic inputs (±10% nominal) --- 
-    alpha: float = 2.9e-6      # Thermal diffusivity [m²/s] 
-    Q:     float = 200.0       # Laser power [W] 
-    A:     float = 0.35        # Absorptivity [-] 
-    h:     float = 20.0        # Convection coefficient [W/(m²·K)]
+    alpha: float = nominals.alpha     # Thermal diffusivity [m²/s] 
+    Q:     float = nominals.Q        # Laser power [W] 
+    A:     float = nominals.A        # Absorptivity [-] 
+    h:     float = nominals.H        # Convection coefficient [W/(m²·K)]
 
     # --- Fixed physical parameters ---
     T_inf:    float = 298.15   # Ambient [K]
