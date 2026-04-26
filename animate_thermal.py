@@ -4,7 +4,7 @@ from matplotlib.animation import FuncAnimation                  # type: ignore
 from thermal_solver import ThermalParams, solve_thermal_explicit
 
 # 1. Run the simulation
-params = ThermalParams(t_end=10.0) # Shorter time for a quick animation
+params = ThermalParams(t_end=25.0) # Shorter time for a quick animation
 results = solve_thermal_explicit(params)
 
 x = results["x"]
@@ -13,8 +13,8 @@ t_melt = params.T_melt  # 1933.0 K
 
 # 2. Setup the figure
 fig, ax = plt.subplots(figsize=(10, 6))
-line, = ax.plot(x * 1000, t_hist[0], color='blue', lw=2, label='Temperature')
-ax.axhline(t_melt, color='red', linestyle='--', label=f'Melt Point ({t_melt}K)')
+line, = ax.plot(x * 1000, t_hist[0], color='red', lw=2, label='Temperature')
+ax.axhline(t_melt, color='blue', linestyle='--', label=f'Melt Point ({t_melt}K)')
 
 ax.set_xlim(0, params.L * 1000) # Convert m to mm
 ax.set_ylim(params.T_inf - 50, 5000)
@@ -39,3 +39,30 @@ plt.show()
 
 # To save as a video file (requires ffmpeg):
 #ani.save('thermal_scan.mp4', writer='ffmpeg', fps=20)
+
+# 1. Find the index for t = 4.0s
+target_time = 4.0
+sampling_rate = 10 # From your update function comment
+frame_index = int(target_time / (params.dt * sampling_rate))
+
+# Ensure the index is within bounds
+frame_index = min(frame_index, len(t_hist) - 1)
+
+# 2. Setup the figure (Same as before)
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.plot(x * 1000, t_hist[frame_index], color='blue', lw=2, label='Temperature')
+ax.axhline(t_melt, color='red', linestyle='--', label=f'Melt Point ({t_melt}K)')
+
+# Formatting
+ax.set_xlim(0, params.L * 1000)
+ax.set_ylim(params.T_inf - 50, 5000)
+ax.set_xlabel('Position (mm)')
+ax.set_ylabel('Temperature (K)')
+ax.set_title(f'Thermal Profile at t = {target_time}s')
+ax.legend()
+
+# 3. Save the plot
+plt.savefig(f'thermal_plot_{target_time}s.png', dpi=300)
+print(f"Plot saved for t={target_time}s at index {frame_index}")
+
+plt.show()

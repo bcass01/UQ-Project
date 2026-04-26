@@ -1,8 +1,13 @@
 import numpy as np      #type:ignore
 import pandas as pd     #type:ignore
 from numpy.polynomial.legendre import legval    #type:ignore
+from generate_lhs import NOMINALS
 
-def build_pce(input_file="lhs_inputs.csv", output_file="uq_results.csv", degree=2):
+def build_pce(input_file="csv/lhs_inputs_90W.csv", output_file="csv/uq_results_90W.csv", degree=3, target='T_max'):
+
+    if target != "T_max" and target != "t_melt":
+        raise ValueError("Invalid target variable provided")
+
     # 1. Load your data
     inputs = pd.read_csv(input_file)
     outputs = pd.read_csv(output_file)
@@ -11,9 +16,9 @@ def build_pce(input_file="lhs_inputs.csv", output_file="uq_results.csv", degree=
     # (Using the +/- 10% bounds from your proposal)
     xi = pd.DataFrame()
     for col in ['alpha', 'Q', 'A', 'h']:
-        low, high = inputs[col].min(), inputs[col].max()
-        xi[col] = 2 * (inputs[col] - low) / (high - low) - 1
-    
+        low = NOMINALS[col] * 0.9
+        high = NOMINALS[col] * 1.1
+        xi[col] = 2 * (inputs[col] - low) / (high - low) - 1    
     # 3. Create Multi-Index (Total Degree p=2, d=4)
     # For a 2nd order PCE with 4 variables, there are 15 terms
     from itertools import product
@@ -21,7 +26,7 @@ def build_pce(input_file="lhs_inputs.csv", output_file="uq_results.csv", degree=
     
     # 4. Build Design Matrix (Psi)
     # Each row is a sample, each column is a basis function product
-    N_samples = 1000  # Use a subset of 1k samples to 'train' the surrogate
+    N_samples = len(inputs)  # Use samples to 'train' the surrogate
     Psi = np.ones((N_samples, len(indices)))
     
     for i in range(N_samples):
@@ -37,7 +42,7 @@ def build_pce(input_file="lhs_inputs.csv", output_file="uq_results.csv", degree=
 
     # 5. Solve for Coefficients (c) using Least Squares
     # y = Psi * c  => c = (Psi^T * Psi)^-1 * Psi^T * y
-    y = outputs['T_max'].values[:N_samples]
+    y = outputs[target].values[:N_samples]
     c, residuals, rank, s = np.linalg.lstsq(Psi, y, rcond=None)
     
     return indices, c
@@ -45,10 +50,14 @@ def build_pce(input_file="lhs_inputs.csv", output_file="uq_results.csv", degree=
 # The coefficients c_0 is the PCE-predicted mean. 
 # The sum of squares of c_j (for j > 0) relates to the variance.
 
-def generate_report_metrics():
+def generate_report_metrics(t):
     # 1. Build the PCE and get coefficients
-    indices, c = build_pce()
-    
+    indices, c = build_pce(target=t)
+    if t == "T_max":
+        unit = "K"
+    elif t == "t_melt":
+        unit = "s"
+        
     # 2. Extract PCE-derived Mean
     # In a Legendre-PCE, the first coefficient (index 0,0,0,0) is the mean
     pce_mean = c[0]
@@ -76,13 +85,14 @@ def generate_report_metrics():
             sobol_contributions[param_map[active_dim]] += term_contribution
 
     # 4. Final Outputs for Bernie's Report
-    print("--- PCE VALIDATION RESULTS ---")
-    print(f"PCE Mean (a_0): {pce_mean:.4f} K")
-    print(f"PCE Total Variance: {pce_var:.4f}")
+    print("--- PCE VALIDATION RESULTS:", t, "--- ")
+    print(f"PCE-predicted mean: {pce_mean:.4f}", unit)
+    print(f"PCE-predicted variance: {pce_var:.4f}")
     print("\n--- GLOBAL SENSITIVITY ANALYSIS (SOBOL INDICES) ---")
     for param, val in sobol_contributions.items():
         s_i = val / pce_var
         print(f"First-order Sobol Index for {param}: {s_i:.4f}")
-
+    print()
 if __name__ == "__main__":
-    generate_report_metrics()
+    generate_report_metrics('T_max')
+    generate_report_metrics('t_melt')
