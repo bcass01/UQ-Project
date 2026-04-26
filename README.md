@@ -50,6 +50,8 @@ $$s(x,t) = \\frac{1}{\\sigma\\sqrt{2\\pi}} \\exp\\left(-\\frac{(x - vt)^2}{2\\si
 
 ## How to Run
 
+**Note**: You may need to manually adjust file names and paths in `generate_lhs.py`, `sim.py`, `analyze_sim_results.py`, and `pce_results.py`, as well as values in `nominals.py`.
+
 1.  **Verify the Solver:** Run the test suite to ensure energy conservation and stability.
     ```bash
     python test_thermal_solver.py
