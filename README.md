@@ -1,18 +1,18 @@
 # Uncertainty Quantification in a 1D Thermal Model for Metal AM
 
-This project investigates the propagation of parametric uncertainty in a one-dimensional transient thermal model for **Metal Additive Manufacturing (AM)**, specifically focusing on **Ti-6Al-4V**. By utilizing **Polynomial Chaos Expansion (PCE)** and **Latin Hypercube Sampling (LHS)**, the study quantifies how variability in laser parameters and material properties influences the thermal field.
+This project investigates the propagation of parametric uncertainty in a one-dimensional transient thermal model for Metal Additive Manufacturing (AM), specifically focusing on Ti-6Al-4V. By utilizing Polynomial Chaos Expansion (PCE) and Latin Hypercube Sampling (LHS), the study quantifies how variability in laser parameters and material properties influences the thermal field.
 
 ---
 
 ## Project Overview
 
-The core of this project is a reduced-order model of the **Laser Powder Bed Fusion (LPBF)** process. It simulates a Gaussian heat source moving across a 1D domain, governed by the transient heat equation with Robin boundary conditions.
+The core of this project is a reduced-order model of the Laser Powder Bed Fusion (LPBF) process. It simulates a Gaussian heat source moving across a 1D domain, governed by the transient heat equation with Robin boundary conditions.
 
 ### Key Features
 * **Physics-Based Modeling:** Implements an explicit finite difference scheme to solve for temperature distribution over time.
 * **Uncertainty Quantification:** Models four uncertain inputs ($\\alpha, Q, A, h$) using independent uniform distributions within a $\\pm 10\%$ range of nominal values.
-* **Surrogate Modeling:** Constructs a non-intrusive **Legendre-basis PCE** to replace expensive simulations with an efficient polynomial surrogate.
-* **Sensitivity Analysis:** Calculates **First-order Sobol Indices** to identify which parameters most heavily drive variance in the output.
+* **Surrogate Modeling:** Constructs a non-intrusive Legendre-basis PCE to replace expensive simulations with an efficient polynomial surrogate.
+* **Sensitivity Analysis:** Calculates First-order Sobol Indices to identify which parameters most heavily drive variance in the output.
 
 ---
 
@@ -23,7 +23,7 @@ The model solves the 1D heat equation:
 
 $$\\frac{\\partial T}{\\partial t} = \\alpha \\frac{\\partial^2 T}{\\partial x^2} + \\frac{A Q}{\\rho c_p A_c} s(x,t)$$
 
-Where $s(x,t)$ is a moving **Gaussian source**:
+Where $s(x,t)$ is a moving Gaussian source:
 
 $$s(x,t) = \\frac{1}{\\sigma\\sqrt{2\\pi}} \\exp\\left(-\\frac{(x - vt)^2}{2\\sigma^2}\\right)$$
 
